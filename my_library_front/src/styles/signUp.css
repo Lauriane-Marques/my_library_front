@@ -59,14 +59,21 @@ body{
 
 .input {
   background-color: rgba(37,161,142, 0.1);
-  border-radius: 12px;
-  border: 2px solid var(--midnight-green);
+  /* border-radius: 12px; */
+  /* border: 2px solid var(--midnight-green); */
+  border: none;
+  box-shadow: inset 0px -3px 0px 0px rgba(187,187,187,0.2);
   box-sizing: border-box;
   color: var(--dark-green);
   font-size: 1.2rem;
   height: 6vh;
   padding: 4px 20px 0;
   width: 100%;
+}
+
+.input:focus{
+  box-shadow: inset 0px -3px 0px 0px var(--pacific-cyan);
+ outline: none;
 }
 
 .error-message{

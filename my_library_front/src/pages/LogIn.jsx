@@ -1,5 +1,7 @@
-import { useState } from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { Link, useNavigate, useParams } from "react-router-dom";
+
+const apiUrl = import.meta.env.VITE_API_URL
 
 import './../styles/logIn.css';
 
@@ -11,6 +13,21 @@ function LogIn() {
     const [rememberMe, setRememberMe] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [redirectMessage, setRedirectMessage] = useState(null);
+
+    useEffect(()=> {
+        const queryParams = new URLSearchParams(location.search);
+        const redirectParam = queryParams.get('redirect')
+
+        if (redirectParam === 'true'){
+            setRedirectMessage("Please log in to get access to this content")
+        }
+
+        const fromPage = queryParams.get('from')
+        if(fromPage){
+            localStorage.setItem('redirectAfterLogin', fromPage)
+        }
+    }, [location.search])
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -18,9 +35,7 @@ function LogIn() {
         setError(null);
 
         try {
-            let url = 'https://my-library-back.vercel.app/login'
-            // let url = 'http://localhost:3000/login'
-            const response = await fetch(url, {
+            const response = await fetch(`${apiUrl}/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -45,7 +60,9 @@ function LogIn() {
                 localStorage.setItem("userToken", data.token);
             }
 
-            navigate('/');
+            const toPage = localStorage.getItem('redirectAfterLogin') || '/';
+            localStorage.removeItem('redirectAfterLogin');
+            navigate(toPage)
             
         } catch (error) {
             console.error("Request error :", error);
@@ -59,7 +76,9 @@ function LogIn() {
         <div className="connection-container">
             <form onSubmit={handleLogin} className='form1'>
                 <div className='title'>Welcome back</div>
-                <div className='subtitle'>Please log in</div>
+
+                {redirectMessage && (<div className='subtitle'>{redirectMessage}</div>)}
+                
                 <div className="connection-inputs">
                     <div className="input-group">
                         <label className="input-title">Email</label>

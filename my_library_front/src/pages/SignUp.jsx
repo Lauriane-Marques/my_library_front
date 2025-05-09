@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 
+const apiUrl = import.meta.env.VITE_API_URL
+
 import './../styles/signUp.css'
 
 function SignUp() {  
@@ -19,9 +21,7 @@ function SignUp() {
         setError(null);
 
         try {
-            let url = 'https://my-library-back.vercel.app/signup'
-            // let url = 'http://localhost:3000/signup'
-            const response = await fetch(url, {
+            const response = await fetch(`${apiUrl}/signup`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

@@ -3,8 +3,6 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 
 const apiUrl = import.meta.env.VITE_API_URL
 
-import './../styles/logIn.css';
-
 function LogIn() {  
     const navigate = useNavigate(); 
 
@@ -73,64 +71,81 @@ function LogIn() {
     };
 
     return (
-        <div className="connection-container">
-            <form onSubmit={handleLogin} className='form1'>
-                <div className='title'>Welcome back</div>
+        <div className="bg-gradient-to-br from-teal-900 to-green-200 min-h-screen w-full flex items-center justify-center">
+      <div className="w-full max-w-md">
+        <div className="bg-gray-50 rounded-xl shadow-lg flex flex-col p-6 w-full h-auto justify-center">
+          <h1 className="text-4xl font-semibold text-teal-900 text-center">Welcome back</h1>
+          
+          {redirectMessage && (
+            <h2 className="text-xl text-teal-900 text-center mt-2 mb-2">{redirectMessage}</h2>
+          )}
+          
+          <div className="space-y-4 mt-4">
+            <div className="flex flex-col">
+              <label className="text-teal-900 mb-1 font-medium">Email</label>
+              <input
+                className="bg-teal-50 px-4 py-2 text-teal-900 text-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition duration-200"
+                type="email"
+                placeholder="example@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
 
-                {redirectMessage && (<div className='subtitle'>{redirectMessage}</div>)}
-                
-                <div className="connection-inputs">
-                    <div className="input-group">
-                        <label className="input-title">Email</label>
-                        <input className='input'
-                            type="email"
-                            placeholder="example@email.com"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                    </div>
+            <div className="flex flex-col">
+              <label className="text-teal-900 mb-1 font-medium">Password</label>
+              <input
+                className="bg-teal-50 px-4 py-2 text-teal-900 text-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition duration-200"
+                type="password"
+                placeholder="****"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+          </div>
 
-                    <div className="input-group">
-                        <label className="input-title">Password</label>
-                        <input className='input'
-                            type="password"
-                            placeholder="****"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                    </div>
-                </div>
+          {error && (
+            <div className="mt-4 p-2 bg-red-100 border border-red-500 text-red-700 rounded">
+              ⚠ {error}
+            </div>
+          )}
 
-                {error && <div className="error-message">⚠ {error}</div>}
+          <div className="flex flex-col mt-4">
+            <div className="flex items-center">
+              <input
+                id="remember-me"
+                type="checkbox"
+                className="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+              />
+              <label htmlFor="remember-me" className="ml-2 block text-sm text-teal-900">
+                Remember me
+              </label>
+            </div>
 
-                <div className="actions">
-                    <div className="remember-container">
-                        <label>
-                            <input 
-                                type="checkbox" 
-                                checked={rememberMe}
-                                onChange={(e) => setRememberMe(e.target.checked)}
-                            />
-                            Remember me
-                        </label>
-                    </div>
+            <button
+              onClick={handleLogin}
+              className="bg-persian-green hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-lg transition duration-200 w-1/3 self-center mt-6"
+              disabled={loading}
+            >
+              {loading ? "Logging in" : "Log In"}
+            </button>
 
-                    <button 
-                        type="submit" 
-                        className="connection-button"
-                        disabled={loading}
-                    >
-                        {loading ? "Logging in" : "Log In"}
-                    </button>
-
-                    <div className="already-account">
-                        <p className="text">I don't have an account, <Link className='link-inscription' to="/signup">sign up here</Link></p>
-                    </div>
-                </div>
-            </form>
+            <div className="mt-4 text-center">
+              <p className="text-teal-900">
+                I don't have an account,{" "}
+                <a className="text-teal-500 font-semibold underline" href="/signup">
+                  sign up here
+                </a>
+              </p>
+            </div>
+          </div>
         </div>
+      </div>
+    </div>
     );
 }
 

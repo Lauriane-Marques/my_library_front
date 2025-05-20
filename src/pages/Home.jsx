@@ -2,6 +2,7 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import Banner from '../components/Banner';
+import BookCard from '../components/BookCard';
 
 const Home = () => {
 
@@ -82,16 +83,15 @@ const Home = () => {
     return (
         <div>
             <Banner/>
-
-            {books.map((book) => (
-                <div>
-                    <h1>{book.title}</h1>
-                    <h2>{book.author}</h2>
-                </div>
-            ))}
+            <div className='grid grid-cols-2 gap-2 max-w-[70vw] justify-center mx-auto'>
+                {books.map((book) => (
+                    <BookCard key={book.id} book={book}/>
+                    ))}
+            </div>
             <h1 className=''>Hello</h1>
             <p><Link className='link-inscription' to="/signup">Sign up</Link></p>
             <p><Link to="/login">Register</Link></p>
+            
         </div>
     );
 };

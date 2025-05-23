@@ -12,7 +12,14 @@ function BookCard({book}) {
                 <h2 className="card-title">{book.title}</h2>
                 <h3>by {book.author}</h3>
                 <div className="card-actions justify-end">
-                <button className="btn btn-primary">Add to my list</button>
+                <div className="dropdown dropdown-center">
+                    <div tabIndex={0} role="button" className="btn m-1">Add to my list</div>
+                    <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+                        <li><a>Want to read</a></li>
+                        <li><a>Reading</a></li>
+                        <li><a>Read</a></li>
+                    </ul>
+                </div>
                 </div>
             </div>
         </div>

@@ -8,6 +8,7 @@ const Home = () => {
 
     const [books, setBooks] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [isLoadingMore, setIsLoadingMore] = useState(false);
     const [currentSearchTerm, setCurrentSearchTerm] = useState('');
     const [currentOffset, setCurrentOffset] = useState(0);
     const [totalResults, setTotalResults] = useState(0);
@@ -20,6 +21,7 @@ const Home = () => {
     const fetchBooks = async (isNewSearch = true) => {
         try {
             setIsLoading(true);
+            setIsLoadingMore(true);
             
             let searchTerm = currentSearchTerm;
             let offset = currentOffset;
@@ -61,20 +63,18 @@ const Home = () => {
             setTotalResults(data.numFound);
             setError(null);
         } catch (err) {
-            setError("Impossible de charger les livres. Veuillez réessayer plus tard.");
-            console.error("Erreur lors du chargement des livres:", err);
+            setError("Unable to load books. Please try again later.");
+            console.error("Error loading books:", err);
         } finally {
             setIsLoading(false);
+            setIsLoadingMore(false)
         }
     };
 
-    // Chargement initial uniquement au montage du composant
     useEffect(() => {
-        // Ne faire la requête qu'au montage initial
         if (isInitialMount.current) {
             isInitialMount.current = false;
-            
-            // Éviter la double exécution en mode développement avec React.StrictMode
+     
             let isMounted = true;
             
             const initialFetch = async () => {
@@ -85,7 +85,6 @@ const Home = () => {
             
             initialFetch();
             
-            // Fonction de nettoyage pour éviter les mises à jour sur un composant démonté
             return () => {
                 isMounted = false;
             };
@@ -103,18 +102,33 @@ const Home = () => {
     const hasMoreBooks = currentOffset + booksPerPage < totalResults;
 
     return (
-        <div>
+        <div className='bg-persian-green/20 h-auto'>
             <Banner/>
-            <div className='grid grid-cols-2 gap-2 max-w-[70vw] justify-center mx-auto'>
+
+            <div className='grid grid-cols-2 gap-2 max-w-[60vw] justify-center mx-auto my-4'>
                 {books.map((book) => (
                     <BookCard key={book.id} book={book}/>
                     ))}
             </div>
-            <h1 className=''>Hello</h1>
-            <p><Link className='link-inscription' to="/signup">Sign up</Link></p>
-            <p><Link to="/login">Register</Link></p>
-            
+            <div className='grid grid-cols-2 gap-2 max-w-[20vw] mx-auto my-8'>
+                <button className='btn rounded-full bg-pacific-cyan text-white hover:bg-midnight-green' onClick={handleRefresh} disabled={isLoading}>
+                    {isLoading ? 'Loading...' : 'Refresh'}
+                </button>
+
+                {hasMoreBooks && (
+                    <button className='btn rounded-full bg-pacific-cyan text-white hover:bg-midnight-green' onClick={handleLoadMore} disabled={isLoadingMore}>
+                        {isLoadingMore ? 'Loading...' : 'Load More'}
+                    </button>
+                )}
+            </div>
+            <footer className="footer sm:footer-horizontal footer-center bg-persian-green text-base-content p-4">
+                <aside>
+                    <p>Copyright © {new Date().getFullYear()} - All right reserved by Lauriane</p>
+                </aside>
+            </footer>
         </div>
+
+        
     );
 };
 

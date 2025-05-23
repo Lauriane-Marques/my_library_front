@@ -1,6 +1,7 @@
 # My Library - _front_
 
 > You can find the back [here](https://github.com/Lauriane-Marques/my_library_back)
+> > This project is deployed on Vercel, you can access it [here](https://my-library-seven-psi.vercel.app/) (still a WIP)
 
 ### What is it ?❓
 
